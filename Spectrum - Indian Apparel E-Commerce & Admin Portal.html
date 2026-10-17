@@ -1,0 +1,1484 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spectrum — Modern Indian Apparel & Owner Portal</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        spectrum: {
+                            red: '#FF4B4B',
+                            orange: '#FF8C38',
+                            yellow: '#FFD034',
+                            green: '#2AD178',
+                            blue: '#3B82F6',
+                            purple: '#8B5CF6',
+                            pink: '#EC4899'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    keyframes: {
+                        'pulse-glow': {
+                            '0%, 100%': { opacity: 1, transform: 'scale(1)' },
+                            '50%': { opacity: 0.85, transform: 'scale(1.02)' }
+                        }
+                    },
+                    animation: {
+                        'pulse-glow': 'pulse-glow 3s ease-in-out infinite'
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .text-gradient-spectrum {
+            background: linear-gradient(90deg, #FF4B4B, #FF8C38, #FFD034, #2AD178, #3B82F6, #8B5CF6, #EC4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .bg-gradient-spectrum {
+            background: linear-gradient(90deg, #FF4B4B, #FF8C38, #FFD034, #2AD178, #3B82F6, #8B5CF6, #EC4899);
+        }
+
+        .glass-header {
+            background: rgba(255, 255, 255, 0.90);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+        }
+        .dark .glass-header {
+            background: rgba(15, 23, 42, 0.90);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+        }
+        .dark .glass-card {
+            background: rgba(30, 41, 59, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        /* Custom Scrollbars */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.05);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(139, 92, 246, 0.4);
+            border-radius: 99px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(139, 92, 246, 0.7);
+        }
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 transition-colors duration-300 min-h-screen flex flex-col selection:bg-purple-500 selection:text-white">
+
+    <!-- TOP ANNOUNCEMENT BANNER BAR -->
+    <div class="bg-slate-900 text-white text-xs py-2 px-4 text-center font-medium flex items-center justify-between border-b border-white/10 z-50 relative">
+        <div class="hidden sm:flex items-center gap-2 text-slate-300">
+            <i data-lucide="sparkles" class="w-3.5 h-3.5 text-amber-400"></i> Free Delivery across India on orders over ₹999!
+        </div>
+        <div class="mx-auto sm:mx-0 flex items-center gap-2">
+            <span>Festive Celebration: Use code <strong class="text-amber-300 font-extrabold tracking-wider">SPECTRUM10</strong> for 10% OFF!</span>
+        </div>
+        <div class="hidden md:flex items-center gap-4 text-slate-300">
+            <button onclick="openSupportModal('track')" class="hover:text-amber-300 transition-colors flex items-center gap-1">
+                <i data-lucide="truck" class="w-3.5 h-3.5"></i> Track Order
+            </button>
+            <button onclick="openSupportModal('help')" class="hover:text-amber-300 transition-colors flex items-center gap-1">
+                <i data-lucide="headphones" class="w-3.5 h-3.5"></i> 24/7 Help Desk
+            </button>
+        </div>
+    </div>
+
+    <!-- MAIN NAVIGATION HEADER -->
+    <header class="sticky top-0 z-40 w-full glass-header border-b border-slate-200 dark:border-slate-800 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+            
+            <!-- Mobile Menu Trigger -->
+            <button id="mobileMenuBtn" onclick="toggleMobileMenu()" class="lg:hidden p-2 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800">
+                <i data-lucide="menu" class="w-6 h-6"></i>
+            </button>
+
+            <!-- Brand Logo -->
+            <a href="#" class="flex items-center gap-2.5 group shrink-0">
+                <div class="w-10 h-10 rounded-xl bg-gradient-spectrum p-0.5 shadow-md group-hover:scale-105 transition-transform">
+                    <div class="w-full h-full bg-slate-900 rounded-[10px] flex items-center justify-center">
+                        <i data-lucide="shirt" class="w-5 h-5 text-amber-300"></i>
+                    </div>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-2xl sm:text-3xl font-black tracking-tight text-gradient-spectrum uppercase">
+                        Spectrum
+                    </span>
+                    <span class="text-[9px] font-extrabold tracking-widest text-slate-400 -mt-1 uppercase">Fashion House</span>
+                </div>
+            </a>
+
+            <!-- Search Bar (Desktop) -->
+            <div class="hidden lg:flex flex-1 max-w-sm relative">
+                <input type="text" id="searchInput" onkeyup="handleSearch()" placeholder="Search Kurtis, Sarees, Shirts, Jeans..." 
+                    class="w-full pl-10 pr-4 py-2.5 rounded-full border border-slate-300 dark:border-slate-700 bg-slate-100/80 dark:bg-slate-800/80 text-xs focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all">
+                <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3.5 top-3"></i>
+            </div>
+
+            <!-- Utility Action Controls -->
+            <div class="flex items-center gap-2 sm:gap-3">
+                <!-- OWNER / SELLER DASHBOARD TRIGGER -->
+                <button onclick="openOwnerModal()" class="px-3.5 py-2 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-600 dark:text-amber-400 border border-amber-500/30 font-extrabold text-xs transition-all flex items-center gap-1.5 shadow-sm" title="Upload and manage inventory">
+                    <i data-lucide="shield-check" class="w-4 h-4 text-amber-500"></i>
+                    <span class="hidden sm:inline">Owner Portal</span>
+                </button>
+
+                <!-- Customer Support Hub -->
+                <button onclick="openSupportModal('help')" class="p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 transition-colors" title="24/7 Support Desk">
+                    <i data-lucide="headphones" class="w-5 h-5"></i>
+                </button>
+
+                <!-- Wishlist Toggle Button -->
+                <button onclick="openWishlistModal()" class="p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 transition-colors relative" title="Saved Wishlist">
+                    <i data-lucide="heart" class="w-5 h-5"></i>
+                    <span id="wishlistBadge" class="hidden absolute -top-1 -right-1 bg-rose-500 text-white text-[10px] font-extrabold w-4 h-4 rounded-full flex items-center justify-center">0</span>
+                </button>
+
+                <!-- Shopping Bag Drawer Trigger -->
+                <button onclick="toggleCartDrawer()" class="p-2.5 rounded-xl bg-purple-600 hover:bg-purple-700 text-white transition-all flex items-center gap-2 shadow-lg shadow-purple-500/25 relative" title="Shopping Bag">
+                    <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+                    <span class="text-xs font-bold hidden sm:inline">Bag</span>
+                    <span id="cartCountBadge" class="bg-amber-400 text-slate-950 text-xs font-black px-1.5 py-0.5 rounded-full min-w-[20px] text-center">0</span>
+                </button>
+
+                <!-- Dark / Light Theme Toggle -->
+                <button id="darkToggleBtn" onclick="toggleTheme()" class="p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 transition-colors">
+                    <i data-lucide="moon" id="themeIcon" class="w-5 h-5"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- CATEGORY SUB-NAVBAR SCROLLBAR -->
+        <div class="bg-slate-100/70 dark:bg-slate-900/70 border-t border-slate-200 dark:border-slate-800/80 px-4 py-2 overflow-x-auto no-scrollbar">
+            <div class="max-w-7xl mx-auto flex items-center gap-3 text-xs font-bold whitespace-nowrap">
+                <button onclick="filterCategory('all')" class="cat-pill active px-3.5 py-1.5 rounded-full bg-purple-600 text-white shadow-sm transition-all">All Apparel</button>
+                <button onclick="filterCategory('Kurtis')" class="cat-pill px-3.5 py-1.5 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-purple-100 dark:hover:bg-slate-700 transition-all flex items-center gap-1">✨ Kurtis & Anarkalis</button>
+                <button onclick="filterCategory('Tops')" class="cat-pill px-3.5 py-1.5 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-purple-100 dark:hover:bg-slate-700 transition-all">👚 Tops & Tees</button>
+                <button onclick="filterCategory('Skirts')" class="cat-pill px-3.5 py-1.5 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-purple-100 dark:hover:bg-slate-700 transition-all">💃 Skirts & Minis</button>
+                <button onclick="filterCategory('One Piece')" class="cat-pill px-3.5 py-1.5 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-purple-100 dark:hover:bg-slate-700 transition-all">👗 One Piece & Dresses</button>
+                <button onclick="filterCategory('Shirts')" class="cat-pill px-3.5 py-1.5 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-purple-100 dark:hover:bg-slate-700 transition-all">👔 Shirts</button>
+                <button onclick="filterCategory('Pants')" class="cat-pill px-3.5 py-1.5 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-purple-100 dark:hover:bg-slate-700 transition-all">👖 Pants & Trousers</button>
+                <button onclick="filterCategory('Jeans')" class="cat-pill px-3.5 py-1.5 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-purple-100 dark:hover:bg-slate-700 transition-all">👖 Jeans & Denims</button>
+                <button onclick="filterCategory('Sarees')" class="cat-pill px-3.5 py-1.5 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-purple-100 dark:hover:bg-slate-700 transition-all">🥻 Sarees & Lehengas</button>
+                <button onclick="filterCategory('Jackets')" class="cat-pill px-3.5 py-1.5 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-purple-100 dark:hover:bg-slate-700 transition-all">🧥 Jackets & Outerwear</button>
+            </div>
+        </div>
+
+        <!-- Mobile Search Strip -->
+        <div class="lg:hidden px-4 py-2 border-t border-slate-200 dark:border-slate-800">
+            <div class="relative">
+                <input type="text" id="searchInputMobile" onkeyup="handleSearchMobile()" placeholder="Search Kurtis, Sarees, Dresses, Jeans..." 
+                    class="w-full pl-10 pr-4 py-2 rounded-full border border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 text-xs focus:outline-none focus:ring-2 focus:ring-purple-500">
+                <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3.5 top-2.5"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- MOBILE NAVIGATION SIDEBAR DRAWER -->
+    <div id="mobileDrawer" class="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-50 hidden transition-opacity">
+        <div class="w-4/5 max-w-xs bg-white dark:bg-slate-900 h-full p-6 space-y-6 overflow-y-auto">
+            <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-4">
+                <span class="text-xl font-black text-gradient-spectrum">Spectrum Menu</span>
+                <button onclick="toggleMobileMenu()" class="p-2 text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-6 h-6"></i></button>
+            </div>
+            <div class="space-y-4 text-xs font-bold uppercase tracking-wider">
+                <button onclick="filterCategory('all'); toggleMobileMenu()" class="block w-full text-left py-2 border-b border-slate-100 dark:border-slate-800 text-purple-600">Shop All Clothing</button>
+                <div class="space-y-2 pt-2">
+                    <p class="text-[10px] text-purple-500 font-black">Ethnic & Festive Wear</p>
+                    <button onclick="filterCategory('Kurtis'); toggleMobileMenu()" class="block w-full text-left py-1.5 text-slate-600 dark:text-slate-400">✨ Kurtis & Anarkalis</button>
+                    <button onclick="filterCategory('Sarees'); toggleMobileMenu()" class="block w-full text-left py-1.5 text-slate-600 dark:text-slate-400">🥻 Sarees & Lehengas</button>
+                </div>
+                <div class="space-y-2 pt-2">
+                    <p class="text-[10px] text-blue-500 font-black">Women's Western</p>
+                    <button onclick="filterCategory('Tops'); toggleMobileMenu()" class="block w-full text-left py-1.5 text-slate-600 dark:text-slate-400">👚 Tops & Tees</button>
+                    <button onclick="filterCategory('Skirts'); toggleMobileMenu()" class="block w-full text-left py-1.5 text-slate-600 dark:text-slate-400">💃 Skirts & Minis</button>
+                    <button onclick="filterCategory('One Piece'); toggleMobileMenu()" class="block w-full text-left py-1.5 text-slate-600 dark:text-slate-400">👗 One Piece & Dresses</button>
+                </div>
+                <div class="space-y-2 pt-2">
+                    <p class="text-[10px] text-emerald-500 font-black">Men & Bottomwear</p>
+                    <button onclick="filterCategory('Shirts'); toggleMobileMenu()" class="block w-full text-left py-1.5 text-slate-600 dark:text-slate-400">👔 Casual & Formal Shirts</button>
+                    <button onclick="filterCategory('Pants'); toggleMobileMenu()" class="block w-full text-left py-1.5 text-slate-600 dark:text-slate-400">👖 Pants & Trousers</button>
+                    <button onclick="filterCategory('Jeans'); toggleMobileMenu()" class="block w-full text-left py-1.5 text-slate-600 dark:text-slate-400">👖 Denim Jeans</button>
+                    <button onclick="filterCategory('Jackets'); toggleMobileMenu()" class="block w-full text-left py-1.5 text-slate-600 dark:text-slate-400">🧥 Outerwear & Jackets</button>
+                </div>
+                <div class="pt-4 border-t border-slate-200 dark:border-slate-800 space-y-2">
+                    <button onclick="openOwnerModal(); toggleMobileMenu()" class="flex items-center gap-2 w-full py-2 text-amber-500 font-bold">
+                        <i data-lucide="shield-check" class="w-4 h-4"></i> Store Owner Portal
+                    </button>
+                    <button onclick="openSupportModal('help'); toggleMobileMenu()" class="flex items-center gap-2 w-full py-2 text-purple-600 font-bold">
+                        <i data-lucide="headphones" class="w-4 h-4"></i> 24/7 Customer Help
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN BODY CONTENT CONTAINER -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-10">
+
+        <!-- HERO HIGHLIGHT BANNER CAROUSEL -->
+        <section class="relative rounded-3xl overflow-hidden bg-slate-900 text-white shadow-2xl border border-slate-800">
+            <div class="absolute inset-0 z-0 opacity-40 mix-blend-overlay bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&q=80&w=1600');"></div>
+            <div class="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-950/80 to-transparent z-10"></div>
+
+            <div class="relative z-20 p-8 sm:p-12 lg:p-16 max-w-2xl space-y-6">
+                <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-gradient-spectrum text-slate-950 text-xs font-black uppercase tracking-wider shadow-lg">
+                    <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Spectrum Festive 2026 Collection
+                </span>
+                <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-tight">
+                    Contemporary Style In Every <span class="text-gradient-spectrum">Rupee & Color</span>
+                </h1>
+                <p class="text-slate-300 text-xs sm:text-sm leading-relaxed">
+                    Explore handcrafted Anarkali Kurtis, Silk Sarees, One Piece gowns, breezy Skirts, tailored Shirts, Trousers, and Premium Denim Jeans with exact prices in ₹.
+                </p>
+                <div class="flex flex-wrap gap-3 pt-2">
+                    <a href="#catalog" onclick="filterCategory('Kurtis')" class="px-6 py-3 bg-gradient-spectrum hover:opacity-90 text-slate-950 font-black rounded-2xl shadow-xl transition-transform hover:scale-105 flex items-center gap-2 text-xs uppercase tracking-wider">
+                        Explore Kurtis <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </a>
+                    <button onclick="openOwnerModal()" class="px-6 py-3 bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 font-bold rounded-2xl transition-all border border-amber-500/40 text-xs uppercase tracking-wider flex items-center gap-2">
+                        <i data-lucide="plus-circle" class="w-4 h-4"></i> Add New Clothes (Owner)
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- OWNER / SELLER FLOATING QUICK ACTION BANNER -->
+        <div class="glass-card p-4 rounded-2xl border border-amber-500/30 flex flex-col sm:flex-row items-center justify-between gap-4 bg-amber-500/5">
+            <div class="flex items-center gap-3">
+                <div class="p-3 bg-amber-500/20 text-amber-600 dark:text-amber-400 rounded-xl">
+                    <i data-lucide="store" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <h3 class="font-extrabold text-sm text-amber-700 dark:text-amber-300">Are you the Store Owner?</h3>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">Upload new Kurtis, Sarees, Shirts, and Jeans to your live online store instantly in ₹!</p>
+                </div>
+            </div>
+            <button onclick="openOwnerModal()" class="px-5 py-2.5 bg-amber-500 hover:bg-amber-600 text-slate-950 font-black rounded-xl text-xs transition-all shadow-md shrink-0 flex items-center gap-1.5">
+                <i data-lucide="plus-circle" class="w-4 h-4"></i> Open Admin Panel
+            </button>
+        </div>
+
+        <!-- MAIN PRODUCT CATALOG & SEARCH RESULTS -->
+        <section id="catalog" class="space-y-6 pt-2">
+            <!-- Filter Bar & Heading -->
+            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800 pb-6">
+                <div>
+                    <h2 class="text-2xl sm:text-3xl font-black tracking-tight flex items-center gap-2">
+                        <span>Spectrum Collection</span>
+                        <span id="activeCategoryBadge" class="text-xs font-bold px-3 py-1 bg-purple-100 dark:bg-purple-900/50 text-purple-600 dark:text-purple-300 rounded-full">All Apparel</span>
+                    </h2>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Explore clothing sections with explicit price tags in ₹ and direct size selection</p>
+                </div>
+
+                <!-- Price & Sorting Controls -->
+                <div class="flex flex-wrap items-center gap-3">
+                    <div class="flex items-center gap-2 text-xs font-medium">
+                        <span class="text-slate-500 font-bold">Filter Price (₹):</span>
+                        <select id="priceFilter" onchange="applyFilters()" class="bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-purple-500 text-xs">
+                            <option value="all">All Prices in ₹</option>
+                            <option value="under1000">Under ₹1,000</option>
+                            <option value="1000to3000">₹1,000 to ₹3,000</option>
+                            <option value="over3000">Above ₹3,000</option>
+                        </select>
+                    </div>
+
+                    <div class="flex items-center gap-2 text-xs font-medium">
+                        <span class="text-slate-500 font-bold">Sort By:</span>
+                        <select id="sortSelect" onchange="applyFilters()" class="bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-purple-500 text-xs">
+                            <option value="featured">Featured Style</option>
+                            <option value="low-high">Price: Low to High (₹)</option>
+                            <option value="high-low">Price: High to Low (₹)</option>
+                            <option value="rating">Top Customer Rated</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PRODUCT GRID CONTAINER -->
+            <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <!-- Dynamically Rendered Apparel Products -->
+            </div>
+        </section>
+
+        <!-- STORE OWNER INVENTORY MANAGEMENT MATRIX (INLINE OVERVIEW) -->
+        <section class="glass-card p-6 rounded-3xl space-y-4 border border-slate-200 dark:border-slate-800">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h3 class="text-lg font-black text-amber-600 dark:text-amber-400 flex items-center gap-2">
+                        <i data-lucide="layers" class="w-5 h-5"></i> Owner Inventory Management
+                    </h3>
+                    <p class="text-xs text-slate-500">Quickly monitor and manage uploaded apparel stock across sections.</p>
+                </div>
+                <button onclick="openOwnerModal()" class="px-4 py-2 bg-amber-500 text-slate-950 font-bold text-xs rounded-xl hover:bg-amber-600 transition-colors flex items-center gap-1.5">
+                    <i data-lucide="plus" class="w-4 h-4"></i> Add Clothes
+                </button>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-xs text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-slate-200 dark:border-slate-800 text-slate-400 uppercase text-[10px] tracking-wider">
+                            <th class="py-3 px-2">Item</th>
+                            <th class="py-3 px-2">Section</th>
+                            <th class="py-3 px-2">Price in ₹</th>
+                            <th class="py-3 px-2">Sizes</th>
+                            <th class="py-3 px-2 text-right">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adminTableBody" class="divide-y divide-slate-100 dark:divide-slate-800/60 font-medium">
+                        <!-- Dynamically Inserted Owner Rows -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- FAQ ACCORDION SECTION -->
+        <section class="glass-card p-8 rounded-3xl space-y-6">
+            <div class="text-center max-w-xl mx-auto space-y-2">
+                <h3 class="text-2xl font-black text-gradient-spectrum">Spectrum Customer FAQs</h3>
+                <p class="text-xs text-slate-500">Everything you need to know about deliveries across India, sizing, and payments in ₹.</p>
+            </div>
+            <div class="max-w-3xl mx-auto space-y-3 text-xs">
+                <details class="p-4 rounded-2xl bg-slate-100 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 cursor-pointer">
+                    <summary class="font-bold text-sm">How do I upload new clothes as a store owner?</summary>
+                    <p class="mt-2 text-slate-500 leading-relaxed">Click the <strong class="text-amber-500">"Owner Portal"</strong> button in the navigation header. Fill in the item name, select a designated section (Kurtis, Sarees, Shirts, Jeans, etc.), enter the price in ₹, select sizes, and hit "Publish Product". It instantly appears in the live customer shop!</p>
+                </details>
+                <details class="p-4 rounded-2xl bg-slate-100 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 cursor-pointer">
+                    <summary class="font-bold text-sm">What payment methods are supported in India?</summary>
+                    <p class="mt-2 text-slate-500 leading-relaxed">We support Instant UPI payments (GPay, PhonePe, Paytm), Net Banking, Credit/Debit Cards, and Cash on Delivery (COD in ₹) across all Indian pincodes.</p>
+                </details>
+                <details class="p-4 rounded-2xl bg-slate-100 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 cursor-pointer">
+                    <summary class="font-bold text-sm">Are prices tax inclusive?</summary>
+                    <p class="mt-2 text-slate-500 leading-relaxed">Yes! All listed prices in ₹ include GST with zero hidden costs at checkout.</p>
+                </details>
+            </div>
+        </section>
+
+        <!-- WHY CHOOSE SPECTRUM BAR -->
+        <section class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 py-6 border-y border-slate-200 dark:border-slate-800">
+            <div class="flex items-center gap-4 p-4 glass-card rounded-2xl">
+                <div class="p-3 rounded-xl bg-purple-100 dark:bg-purple-950/50 text-purple-600 dark:text-purple-300"><i data-lucide="truck" class="w-6 h-6"></i></div>
+                <div>
+                    <h4 class="text-xs font-bold uppercase">All India Express</h4>
+                    <p class="text-[10px] text-slate-500">Fast 2-4 days shipping in ₹</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-4 p-4 glass-card rounded-2xl">
+                <div class="p-3 rounded-xl bg-emerald-100 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-300"><i data-lucide="shield-check" class="w-6 h-6"></i></div>
+                <div>
+                    <h4 class="text-xs font-bold uppercase">Authentic Fabrics</h4>
+                    <p class="text-[10px] text-slate-500">100% Pure cotton, silk & denim</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-4 p-4 glass-card rounded-2xl">
+                <div class="p-3 rounded-xl bg-amber-100 dark:bg-amber-950/50 text-amber-600 dark:text-amber-300"><i data-lucide="refresh-cw" class="w-6 h-6"></i></div>
+                <div>
+                    <h4 class="text-xs font-bold uppercase">Doorstep Exchange</h4>
+                    <p class="text-[10px] text-slate-500">15-Day hassle-free return</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-4 p-4 glass-card rounded-2xl">
+                <div class="p-3 rounded-xl bg-blue-100 dark:bg-blue-950/50 text-blue-600 dark:text-blue-300"><i data-lucide="headphones" class="w-6 h-6"></i></div>
+                <div>
+                    <h4 class="text-xs font-bold uppercase">24/7 AI Support</h4>
+                    <p class="text-[10px] text-slate-500">Live order & size assistant</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- OWNER / ADMIN STORE DASHBOARD MODAL -->
+    <div id="ownerModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-slate-900 w-full max-w-2xl rounded-3xl shadow-2xl overflow-hidden border border-slate-200 dark:border-slate-800 max-h-[90vh] flex flex-col">
+            
+            <!-- Modal Header -->
+            <div class="p-5 bg-gradient-to-r from-amber-500 to-orange-600 text-slate-950 flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <i data-lucide="store" class="w-6 h-6"></i>
+                    <div>
+                        <h3 class="font-black text-base uppercase tracking-wider">Spectrum Owner / Seller Portal</h3>
+                        <p class="text-[10px] text-slate-900 font-semibold">Upload & manage clothes across sections in ₹</p>
+                    </div>
+                </div>
+                <button onclick="closeOwnerModal()" class="p-2 text-slate-950 hover:bg-black/10 rounded-full"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+
+            <!-- Upload Form -->
+            <form id="ownerUploadForm" onsubmit="handleOwnerUpload(event)" class="p-6 space-y-4 overflow-y-auto text-xs flex-1">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="font-bold text-slate-700 dark:text-slate-300 block mb-1">Product Name *</label>
+                        <input type="text" id="ownerProdName" required placeholder="e.g. Silk Zari Kurti or Slim Blue Jeans" class="w-full px-3 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-amber-500">
+                    </div>
+                    <div>
+                        <label class="font-bold text-slate-700 dark:text-slate-300 block mb-1">Designated Category Section *</label>
+                        <select id="ownerCategory" required class="w-full px-3 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-amber-500 font-bold">
+                            <option value="Kurtis">✨ Kurtis & Anarkalis</option>
+                            <option value="Tops">👚 Tops & Tees</option>
+                            <option value="Skirts">💃 Skirts & Minis</option>
+                            <option value="One Piece">👗 One Piece & Dresses</option>
+                            <option value="Shirts">👔 Shirts (Formal/Casual)</option>
+                            <option value="Pants">👖 Pants & Trousers</option>
+                            <option value="Jeans">👖 Jeans & Denims</option>
+                            <option value="Sarees">🥻 Sarees & Lehengas</option>
+                            <option value="Jackets">🧥 Jackets & Outerwear</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div>
+                        <label class="font-bold text-slate-700 dark:text-slate-300 block mb-1">Price in Rupees (₹) *</label>
+                        <input type="number" id="ownerPrice" required placeholder="1499" class="w-full px-3 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-amber-500 font-mono">
+                    </div>
+                    <div>
+                        <label class="font-bold text-slate-700 dark:text-slate-300 block mb-1">Discount Tag (e.g. 25% OFF)</label>
+                        <input type="text" id="ownerDiscount" placeholder="25% OFF" class="w-full px-3 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-amber-500">
+                    </div>
+                    <div>
+                        <label class="font-bold text-slate-700 dark:text-slate-300 block mb-1">Fabric Material</label>
+                        <input type="text" id="ownerFabric" placeholder="Pure Chanderi Silk" class="w-full px-3 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-amber-500">
+                    </div>
+                </div>
+
+                <!-- Sizes Selector Checkboxes -->
+                <div>
+                    <label class="font-bold text-slate-700 dark:text-slate-300 block mb-1.5">Available Sizes:</label>
+                    <div class="flex gap-3 flex-wrap">
+                        <label class="inline-flex items-center gap-1.5 bg-slate-100 dark:bg-slate-800 px-3 py-1.5 rounded-xl border border-slate-300 dark:border-slate-700 cursor-pointer font-bold">
+                            <input type="checkbox" value="S" checked class="owner-size-checkbox accent-amber-500"> S
+                        </label>
+                        <label class="inline-flex items-center gap-1.5 bg-slate-100 dark:bg-slate-800 px-3 py-1.5 rounded-xl border border-slate-300 dark:border-slate-700 cursor-pointer font-bold">
+                            <input type="checkbox" value="M" checked class="owner-size-checkbox accent-amber-500"> M
+                        </label>
+                        <label class="inline-flex items-center gap-1.5 bg-slate-100 dark:bg-slate-800 px-3 py-1.5 rounded-xl border border-slate-300 dark:border-slate-700 cursor-pointer font-bold">
+                            <input type="checkbox" value="L" checked class="owner-size-checkbox accent-amber-500"> L
+                        </label>
+                        <label class="inline-flex items-center gap-1.5 bg-slate-100 dark:bg-slate-800 px-3 py-1.5 rounded-xl border border-slate-300 dark:border-slate-700 cursor-pointer font-bold">
+                            <input type="checkbox" value="XL" checked class="owner-size-checkbox accent-amber-500"> XL
+                        </label>
+                        <label class="inline-flex items-center gap-1.5 bg-slate-100 dark:bg-slate-800 px-3 py-1.5 rounded-xl border border-slate-300 dark:border-slate-700 cursor-pointer font-bold">
+                            <input type="checkbox" value="XXL" class="owner-size-checkbox accent-amber-500"> XXL
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Image Selection -->
+                <div class="space-y-2">
+                    <label class="font-bold text-slate-700 dark:text-slate-300 block">Product Image URL *</label>
+                    <input type="url" id="ownerImageUrl" required placeholder="https://images.unsplash.com/photo-..." class="w-full px-3 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-amber-500">
+                    
+                    <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Or click a sample image preset below:</p>
+                    <div class="flex gap-2 overflow-x-auto pb-1">
+                        <img onclick="setPresetImage('https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&q=80&w=600')" src="https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&q=80&w=150" alt="Kurti" class="w-12 h-12 object-cover rounded-xl cursor-pointer hover:border-2 hover:border-amber-500 shrink-0">
+                        <img onclick="setPresetImage('https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&q=80&w=600')" src="https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&q=80&w=150" alt="Saree" class="w-12 h-12 object-cover rounded-xl cursor-pointer hover:border-2 hover:border-amber-500 shrink-0">
+                        <img onclick="setPresetImage('https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&q=80&w=600')" src="https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&q=80&w=150" alt="One Piece" class="w-12 h-12 object-cover rounded-xl cursor-pointer hover:border-2 hover:border-amber-500 shrink-0">
+                        <img onclick="setPresetImage('https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?auto=format&fit=crop&q=80&w=600')" src="https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?auto=format&fit=crop&q=80&w=150" alt="Shirt" class="w-12 h-12 object-cover rounded-xl cursor-pointer hover:border-2 hover:border-amber-500 shrink-0">
+                        <img onclick="setPresetImage('https://images.unsplash.com/photo-1541099649105-f69ad21f3246?auto=format&fit=crop&q=80&w=600')" src="https://images.unsplash.com/photo-1541099649105-f69ad21f3246?auto=format&fit=crop&q=80&w=150" alt="Jeans" class="w-12 h-12 object-cover rounded-xl cursor-pointer hover:border-2 hover:border-amber-500 shrink-0">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="font-bold text-slate-700 dark:text-slate-300 block mb-1">Description *</label>
+                    <textarea id="ownerDesc" required rows="3" placeholder="Handcrafted with pure breathable fabric designed for ultimate style..." class="w-full px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-amber-500"></textarea>
+                </div>
+
+                <div class="pt-2">
+                    <button type="submit" class="w-full py-3.5 bg-amber-500 hover:bg-amber-600 text-slate-950 font-black rounded-2xl shadow-xl transition-all uppercase tracking-wider flex items-center justify-center gap-2">
+                        <i data-lucide="plus-circle" class="w-4 h-4"></i> Publish Item to Live Customer Catalog
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- SHOPPING BAG CART DRAWER OVERLAY -->
+    <div id="cartDrawer" class="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-50 hidden transition-opacity duration-300">
+        <div class="fixed right-0 top-0 bottom-0 w-full max-w-md bg-white dark:bg-slate-900 shadow-2xl flex flex-col justify-between border-l border-slate-200 dark:border-slate-800">
+            
+            <!-- Cart Header -->
+            <div class="p-5 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <i data-lucide="shopping-bag" class="w-5 h-5 text-purple-600"></i>
+                    <h3 class="text-base font-extrabold">Your Spectrum Shopping Bag</h3>
+                </div>
+                <button onclick="toggleCartDrawer()" class="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+
+            <!-- Free Shipping Progress Bar (₹) -->
+            <div class="px-5 py-3 bg-purple-50 dark:bg-purple-950/30 border-b border-purple-100 dark:border-purple-900/30 text-xs">
+                <div class="flex justify-between font-bold text-purple-700 dark:text-purple-300 mb-1">
+                    <span id="freeShipText">Add ₹999 for FREE Delivery across India</span>
+                    <i data-lucide="truck" class="w-4 h-4"></i>
+                </div>
+                <div class="w-full bg-slate-200 dark:bg-slate-800 h-2 rounded-full overflow-hidden">
+                    <div id="freeShipBar" class="bg-purple-600 h-full transition-all duration-300" style="width: 0%;"></div>
+                </div>
+            </div>
+
+            <!-- Cart Items List Container -->
+            <div id="cartItemsContainer" class="p-5 flex-1 overflow-y-auto space-y-4">
+                <!-- Dynamically Inserted Bag Items -->
+            </div>
+
+            <!-- Cart Summary & Checkout Bar -->
+            <div class="p-5 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 space-y-4">
+                <!-- Promo Code Section -->
+                <div class="flex gap-2">
+                    <input type="text" id="couponInput" placeholder="Promo Code (SPECTRUM10)" class="flex-1 px-3 py-2 text-xs rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 focus:outline-none">
+                    <button onclick="applyCoupon()" class="px-4 py-2 bg-slate-800 dark:bg-slate-700 text-white rounded-xl text-xs font-bold hover:bg-slate-700">Apply</button>
+                </div>
+
+                <!-- Financial Calculation Breakdown in ₹ -->
+                <div class="space-y-1.5 text-xs">
+                    <div class="flex justify-between text-slate-500">
+                        <span>Subtotal</span>
+                        <span id="cartSubtotalText">₹0</span>
+                    </div>
+                    <div class="flex justify-between text-emerald-600 font-semibold">
+                        <span>Discount</span>
+                        <span id="cartDiscountText">-₹0</span>
+                    </div>
+                    <div class="flex justify-between text-slate-500">
+                        <span>Estimated Shipping</span>
+                        <span id="cartShippingText" class="text-emerald-500 font-bold">FREE</span>
+                    </div>
+                    <div class="flex justify-between text-base font-black text-slate-900 dark:text-white pt-2 border-t border-slate-200 dark:border-slate-800">
+                        <span>Grand Total</span>
+                        <span id="cartGrandTotalText" class="text-purple-600 dark:text-purple-400">₹0</span>
+                    </div>
+                </div>
+
+                <button onclick="openCheckoutModal()" class="w-full py-3.5 bg-gradient-spectrum text-slate-950 font-black rounded-2xl shadow-xl hover:opacity-95 transition-all text-xs uppercase tracking-wider flex items-center justify-center gap-2">
+                    <i data-lucide="lock" class="w-4 h-4"></i> Proceed to Secure Checkout
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- QUICK VIEW MODAL HUB -->
+    <div id="quickViewModal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-slate-900 w-full max-w-3xl rounded-3xl shadow-2xl overflow-hidden border border-slate-200 dark:border-slate-800 relative max-h-[90vh] flex flex-col md:flex-row">
+            <button onclick="closeQuickView()" class="absolute top-4 right-4 z-10 p-2 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-slate-900 dark:hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+
+            <!-- Image Column -->
+            <div class="w-full md:w-1/2 bg-slate-100 dark:bg-slate-950 h-64 md:h-auto relative">
+                <img id="qvImage" src="" alt="Product Image" class="w-full h-full object-cover">
+                <span id="qvTag" class="absolute top-4 left-4 bg-purple-600 text-white text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">Category</span>
+            </div>
+
+            <!-- Content Column -->
+            <div class="w-full md:w-1/2 p-6 md:p-8 space-y-4 overflow-y-auto">
+                <div>
+                    <h3 id="qvTitle" class="text-xl font-bold">Product Title</h3>
+                    <div class="flex items-center gap-2 mt-1">
+                        <div class="flex text-amber-400"><i data-lucide="star" class="w-4 h-4 fill-amber-400"></i><i data-lucide="star" class="w-4 h-4 fill-amber-400"></i><i data-lucide="star" class="w-4 h-4 fill-amber-400"></i><i data-lucide="star" class="w-4 h-4 fill-amber-400"></i><i data-lucide="star" class="w-4 h-4 fill-amber-400"></i></div>
+                        <span class="text-xs text-slate-400 font-semibold">(4.9 Rating)</span>
+                    </div>
+                </div>
+
+                <!-- Price Display in Rupees -->
+                <div class="flex items-baseline gap-3">
+                    <span id="qvPrice" class="text-2xl font-black text-purple-600 dark:text-purple-400">₹0</span>
+                    <span id="qvOldPrice" class="text-sm text-slate-400 line-through">₹0</span>
+                    <span id="qvDiscount" class="text-xs font-bold text-emerald-500 bg-emerald-100 dark:bg-emerald-950/50 px-2 py-0.5 rounded-md">0% OFF</span>
+                </div>
+
+                <div class="text-xs text-slate-500 space-y-1">
+                    <p id="qvDesc">High quality apparel crafted for durability and everyday comfort.</p>
+                    <p class="font-bold text-purple-600 dark:text-purple-400">Fabric: <span id="qvFabricText" class="text-slate-600 dark:text-slate-300 font-normal">Pure Cotton</span></p>
+                </div>
+
+                <!-- Size Selection -->
+                <div class="space-y-2">
+                    <label class="text-[10px] font-black uppercase tracking-wider text-slate-500">Select Size:</label>
+                    <div id="qvSizeContainer" class="flex gap-1.5 flex-wrap">
+                        <button onclick="selectQvSize('S', this)" class="qv-size-btn border border-purple-600 bg-purple-600 text-white px-3 py-1.5 rounded-xl text-xs font-bold">S</button>
+                        <button onclick="selectQvSize('M', this)" class="qv-size-btn border border-slate-300 dark:border-slate-700 px-3 py-1.5 rounded-xl text-xs font-bold hover:border-purple-600">M</button>
+                        <button onclick="selectQvSize('L', this)" class="qv-size-btn border border-slate-300 dark:border-slate-700 px-3 py-1.5 rounded-xl text-xs font-bold hover:border-purple-600">L</button>
+                        <button onclick="selectQvSize('XL', this)" class="qv-size-btn border border-slate-300 dark:border-slate-700 px-3 py-1.5 rounded-xl text-xs font-bold hover:border-purple-600">XL</button>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="pt-2 space-y-2">
+                    <button id="qvAddToCartBtn" class="w-full py-3 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-xl text-xs transition-all flex items-center justify-center gap-2">
+                        <i data-lucide="shopping-bag" class="w-4 h-4"></i> Add To Bag
+                    </button>
+                    <button id="qvBuyNowBtn" class="w-full py-3 bg-gradient-spectrum text-slate-950 font-black rounded-xl text-xs hover:opacity-90 transition-all uppercase tracking-wider">
+                        Buy Now (Instant Checkout)
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CUSTOMER SUPPORT & LIVE HELP DESK MODAL -->
+    <div id="supportModal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-slate-900 w-full max-w-2xl rounded-3xl shadow-2xl overflow-hidden border border-slate-200 dark:border-slate-800 flex flex-col max-h-[85vh]">
+            
+            <!-- Support Modal Header -->
+            <div class="p-5 bg-slate-900 text-white flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="p-2 bg-gradient-spectrum text-slate-950 rounded-xl"><i data-lucide="headphones" class="w-5 h-5"></i></div>
+                    <div>
+                        <h3 class="font-bold text-sm">Spectrum Customer Support</h3>
+                        <p class="text-[10px] text-slate-400">24/7 AI Live Assistant & Order Desk (India)</p>
+                    </div>
+                </div>
+                <button onclick="closeSupportModal()" class="p-2 text-slate-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+
+            <!-- Support Tabs -->
+            <div class="flex border-b border-slate-200 dark:border-slate-800 text-xs font-bold bg-slate-100 dark:bg-slate-950">
+                <button onclick="switchSupportTab('chat')" id="tabChatBtn" class="flex-1 py-3 border-b-2 border-purple-600 text-purple-600 font-extrabold flex items-center justify-center gap-1.5">
+                    <i data-lucide="message-square" class="w-4 h-4"></i> Live AI Chat
+                </button>
+                <button onclick="switchSupportTab('track')" id="tabTrackBtn" class="flex-1 py-3 text-slate-500 hover:text-purple-600 flex items-center justify-center gap-1.5">
+                    <i data-lucide="truck" class="w-4 h-4"></i> Track Order
+                </button>
+                <button onclick="switchSupportTab('size')" id="tabSizeBtn" class="flex-1 py-3 text-slate-500 hover:text-purple-600 flex items-center justify-center gap-1.5">
+                    <i data-lucide="ruler" class="w-4 h-4"></i> Size Calculator
+                </button>
+            </div>
+
+            <!-- Tab 1: Live AI Chat -->
+            <div id="supportTabChat" class="p-5 flex-1 flex flex-col overflow-hidden space-y-4">
+                <div id="chatMessages" class="flex-1 overflow-y-auto space-y-3 pr-2 text-xs">
+                    <div class="flex gap-2">
+                        <div class="w-7 h-7 rounded-full bg-purple-600 text-white flex items-center justify-center font-bold text-[10px]">S</div>
+                        <div class="bg-slate-100 dark:bg-slate-800 p-3 rounded-2xl max-w-xs text-slate-700 dark:text-slate-300">
+                            Namaste! Welcome to Spectrum. Ask me anything about Kurtis sizing, delivery speeds in India, or payment options in ₹!
+                        </div>
+                    </div>
+                </div>
+                <div class="flex gap-2 pt-2 border-t border-slate-200 dark:border-slate-800">
+                    <input type="text" id="chatInput" onkeypress="if(event.key==='Enter') sendChatMessage()" placeholder="Ask about sizing, returns, UPI payments..." class="flex-1 px-4 py-2.5 text-xs rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-purple-500">
+                    <button onclick="sendChatMessage()" class="px-4 py-2.5 bg-purple-600 text-white rounded-xl text-xs font-bold hover:bg-purple-700">
+                        <i data-lucide="send" class="w-3.5 h-3.5"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Tab 2: Track Order -->
+            <div id="supportTabTrack" class="p-6 hidden space-y-6">
+                <div class="space-y-2">
+                    <label class="text-xs font-bold text-slate-500 uppercase">Enter Order ID:</label>
+                    <div class="flex gap-2">
+                        <input type="text" id="trackOrderIdInput" placeholder="e.g. #SPEC98342" class="flex-1 px-4 py-2.5 text-xs rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 font-mono">
+                        <button onclick="trackOrderSim()" class="px-5 py-2.5 bg-purple-600 text-white text-xs font-bold rounded-xl hover:bg-purple-700">Track Status</button>
+                    </div>
+                </div>
+
+                <div id="trackResultBox" class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-4">
+                    <div class="flex items-center justify-between text-xs">
+                        <span class="font-bold">Order #SPEC98342</span>
+                        <span class="text-emerald-500 font-bold bg-emerald-100 dark:bg-emerald-950/50 px-2 py-0.5 rounded-full">In Transit</span>
+                    </div>
+                    <div class="space-y-3 text-xs">
+                        <div class="flex items-center gap-3 text-emerald-500 font-semibold"><i data-lucide="check-circle" class="w-4 h-4"></i> Order Confirmed & Packed</div>
+                        <div class="flex items-center gap-3 text-purple-500 font-semibold"><i data-lucide="truck" class="w-4 h-4"></i> Dispatched via Express Courier</div>
+                        <div class="flex items-center gap-3 text-slate-400"><i data-lucide="clock" class="w-4 h-4"></i> Estimated Delivery: Tomorrow by 4 PM</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab 3: Size Guide Calculator -->
+            <div id="supportTabSize" class="p-6 hidden space-y-4">
+                <p class="text-xs text-slate-500">Calculate your exact fit for Kurtis, Sarees, Dresses, Shirts, and Jeans.</p>
+                <div class="grid grid-cols-2 gap-4 text-xs">
+                    <div>
+                        <label class="font-bold text-slate-500">Bust / Chest (Inches):</label>
+                        <input type="number" id="sizeBust" placeholder="36" class="w-full mt-1 p-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800">
+                    </div>
+                    <div>
+                        <label class="font-bold text-slate-500">Waist (Inches):</label>
+                        <input type="number" id="sizeWaist" placeholder="30" class="w-full mt-1 p-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800">
+                    </div>
+                </div>
+                <button onclick="calculateSuggestedSize()" class="w-full py-2.5 bg-purple-600 text-white rounded-xl text-xs font-bold">Calculate Recommended Size</button>
+                <div id="sizeResultText" class="text-center font-bold text-purple-600 dark:text-purple-400 text-sm hidden">Suggested Size: Medium (M)</div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- CHECKOUT MODAL IN RUPEES -->
+    <div id="checkoutModal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-slate-900 w-full max-w-xl rounded-3xl shadow-2xl overflow-hidden border border-slate-200 dark:border-slate-800 p-6 space-y-6 max-h-[90vh] overflow-y-auto">
+            <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-4">
+                <h3 class="text-xl font-black text-gradient-spectrum">Spectrum Checkout (INR ₹)</h3>
+                <button onclick="closeCheckoutModal()" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+
+            <!-- Multi Step Form -->
+            <form id="checkoutForm" onsubmit="handlePlaceOrder(event)" class="space-y-4 text-xs">
+                <div class="space-y-3">
+                    <h4 class="font-bold text-sm text-slate-700 dark:text-slate-300 flex items-center gap-2">
+                        <i data-lucide="map-pin" class="w-4 h-4 text-purple-500"></i> Indian Shipping Address
+                    </h4>
+                    <div class="grid grid-cols-2 gap-3">
+                        <input type="text" required placeholder="Full Name" class="px-3 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800">
+                        <input type="tel" required placeholder="Mobile Number (+91)" class="px-3 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800">
+                    </div>
+                    <input type="text" required placeholder="House No, Street, Landmark" class="w-full px-3 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800">
+                    <div class="grid grid-cols-3 gap-3">
+                        <input type="text" required placeholder="City" class="px-3 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800">
+                        <input type="text" required placeholder="State" class="px-3 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800">
+                        <input type="text" required placeholder="6-digit PIN Code" class="px-3 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 font-mono">
+                    </div>
+                </div>
+
+                <div class="space-y-3 pt-3 border-t border-slate-200 dark:border-slate-800">
+                    <h4 class="font-bold text-sm text-slate-700 dark:text-slate-300 flex items-center gap-2">
+                        <i data-lucide="credit-card" class="w-4 h-4 text-emerald-500"></i> Payment Mode
+                    </h4>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                        <label class="border border-purple-500 bg-purple-50/50 dark:bg-purple-950/30 p-2.5 rounded-xl cursor-pointer flex items-center gap-2 font-bold text-purple-600">
+                            <input type="radio" name="payMethod" checked class="accent-purple-600"> UPI (GPay/PhonePe)
+                        </label>
+                        <label class="border border-slate-200 dark:border-slate-800 p-2.5 rounded-xl cursor-pointer flex items-center gap-2 font-medium text-slate-600 dark:text-slate-400">
+                            <input type="radio" name="payMethod" class="accent-purple-600"> Cards / NetBanking
+                        </label>
+                        <label class="border border-slate-200 dark:border-slate-800 p-2.5 rounded-xl cursor-pointer flex items-center gap-2 font-medium text-slate-600 dark:text-slate-400 col-span-2 sm:col-span-1">
+                            <input type="radio" name="payMethod" class="accent-purple-600"> Cash on Delivery (₹)
+                        </label>
+                    </div>
+                </div>
+
+                <div class="pt-4">
+                    <button type="submit" class="w-full py-3.5 bg-gradient-spectrum text-slate-950 font-black rounded-2xl shadow-xl hover:opacity-95 text-xs uppercase tracking-wider">
+                        Confirm & Pay Total Amount Now
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- INSTANT ORDER CONFIRMATION MODAL -->
+    <div id="orderSuccessModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-slate-900 w-full max-w-md rounded-3xl shadow-2xl p-8 text-center space-y-5 border border-slate-200 dark:border-slate-800">
+            <div class="w-16 h-16 bg-emerald-100 dark:bg-emerald-950/50 text-emerald-500 rounded-full flex items-center justify-center mx-auto">
+                <i data-lucide="check-circle-2" class="w-10 h-10"></i>
+            </div>
+            <h3 class="text-2xl font-black">Order Placed Successfully!</h3>
+            <p class="text-xs text-slate-500">Thank you for choosing Spectrum. Your order ID is <strong id="successOrderId" class="text-purple-600">#SPEC99382</strong>. Confirmation message sent to your mobile.</p>
+            <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950 text-xs text-left space-y-1 border border-slate-200 dark:border-slate-800">
+                <p><strong>Estimated Express Delivery:</strong> 2 - 4 Business Days</p>
+                <p><strong>Shipping Partner:</strong> Spectrum Express India</p>
+            </div>
+            <button onclick="closeOrderSuccess()" class="w-full py-3 bg-purple-600 text-white rounded-xl text-xs font-bold hover:bg-purple-700">Continue Shopping</button>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-900 text-slate-400 text-xs border-t border-slate-800 pt-16 pb-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div class="space-y-4">
+                    <span class="text-2xl font-black text-gradient-spectrum">Spectrum</span>
+                    <p class="text-slate-400 leading-relaxed">India's modern fashion store offering ethnic Kurtis, Silk Sarees, One Piece dresses, Tops, Shirts, Pants, and Jeans with prices in Rupees (₹).</p>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold text-sm mb-4">Clothing Sections</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#catalog" onclick="filterCategory('Kurtis')" class="hover:text-purple-400">Kurtis & Anarkalis</a></li>
+                        <li><a href="#catalog" onclick="filterCategory('Sarees')" class="hover:text-purple-400">Sarees & Lehengas</a></li>
+                        <li><a href="#catalog" onclick="filterCategory('One Piece')" class="hover:text-purple-400">One Piece & Dresses</a></li>
+                        <li><a href="#catalog" onclick="filterCategory('Tops')" class="hover:text-purple-400">Tops & Tees</a></li>
+                        <li><a href="#catalog" onclick="filterCategory('Shirts')" class="hover:text-purple-400">Formal & Casual Shirts</a></li>
+                        <li><a href="#catalog" onclick="filterCategory('Jeans')" class="hover:text-purple-400">Pants & Denim Jeans</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold text-sm mb-4">Owner & Help Desk</h4>
+                    <ul class="space-y-2">
+                        <li><a href="javascript:void(0)" onclick="openOwnerModal()" class="text-amber-400 font-bold hover:underline">Owner Upload Portal</a></li>
+                        <li><a href="javascript:void(0)" onclick="openSupportModal('help')" class="hover:text-purple-400">24/7 Live AI Help Desk</a></li>
+                        <li><a href="javascript:void(0)" onclick="openSupportModal('track')" class="hover:text-purple-400">Track Order Online</a></li>
+                        <li><a href="javascript:void(0)" onclick="openSupportModal('size')" class="hover:text-purple-400">Size Calculator Guide</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold text-sm mb-4">Subscribe for 10% OFF</h4>
+                    <p class="mb-3">Get VIP updates on new festive collections and special offers in ₹.</p>
+                    <div class="flex gap-2">
+                        <input type="email" placeholder="Your email..." class="px-3 py-2 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white focus:outline-none flex-1">
+                        <button onclick="alert('Subscribed! Use code SPECTRUM10 for 10% OFF.')" class="px-4 py-2 bg-gradient-spectrum text-slate-950 font-bold rounded-xl">Join</button>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-slate-800 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <p>© 2026 Spectrum Fashion Brands Ltd. All prices displayed in Indian Rupees (₹).</p>
+                <div class="flex items-center gap-4 text-slate-400">
+                    <i data-lucide="shield" class="w-4 h-4"></i> SSL Secured Payment Gateway
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- TOAST NOTIFICATION STACK -->
+    <div id="toastContainer" class="fixed bottom-6 right-6 z-50 space-y-2 pointer-events-none"></div>
+
+    <!-- JAVASCRIPT APPLICATION CORE ENGINE -->
+    <script>
+        lucide.createIcons();
+
+        // INITIAL APPAREL PRODUCT DATABASE IN RUPEES (₹)
+        const DEFAULT_PRODUCTS = [
+            {
+                id: 1,
+                name: "Anarkali Mirror-Work Cotton Kurti",
+                category: "Kurtis",
+                price: 1499,
+                oldPrice: 2499,
+                discount: "40% OFF",
+                rating: 4.9,
+                fabric: "100% Pure Chanderi Cotton",
+                image: "https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&q=80&w=600",
+                description: "Handcrafted pure cotton festive Anarkali Kurti with delicate mirror embroidery and matching dupatta."
+            },
+            {
+                id: 2,
+                name: "Kanjivaram Silk Zari Border Saree",
+                category: "Sarees",
+                price: 3299,
+                oldPrice: 4999,
+                discount: "34% OFF",
+                rating: 5.0,
+                fabric: "Authentic Art Silk Blend",
+                image: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&q=80&w=600",
+                description: "Elegantly woven silk saree featuring traditional gold zari borders and matching unstitched blouse piece."
+            },
+            {
+                id: 3,
+                name: "Floral Pleated One Piece Dress",
+                category: "One Piece",
+                price: 1899,
+                oldPrice: 2799,
+                discount: "32% OFF",
+                rating: 4.8,
+                fabric: "Breathable Georgette",
+                image: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&q=80&w=600",
+                description: "Breezy pastel floral one piece gown dress designed with an elegant ribbon waist tie."
+            },
+            {
+                id: 4,
+                name: "Satin Puff-Sleeve Chic Top",
+                category: "Tops",
+                price: 899,
+                oldPrice: 1299,
+                discount: "30% OFF",
+                rating: 4.7,
+                fabric: "Soft Satin Silk",
+                image: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&q=80&w=600",
+                description: "Ultra-soft silk satin blouse top with gathered elastic puff sleeves."
+            },
+            {
+                id: 5,
+                name: "Tiered Boho Flared Skirt",
+                category: "Skirts",
+                price: 1199,
+                oldPrice: 1799,
+                discount: "33% OFF",
+                rating: 4.9,
+                fabric: "Rayon Blend",
+                image: "https://images.unsplash.com/photo-1583496661160-fb5886a0aaaa?auto=format&fit=crop&q=80&w=600",
+                description: "Flowy flared bohemian midi skirt with elasticized waist ribbon."
+            },
+            {
+                id: 6,
+                name: "Classic Organic Linen Casual Shirt",
+                category: "Shirts",
+                price: 1299,
+                oldPrice: 1999,
+                discount: "35% OFF",
+                rating: 4.8,
+                fabric: "100% Organic Linen",
+                image: "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?auto=format&fit=crop&q=80&w=600",
+                description: "Breathable 100% organic linen casual button-down shirt."
+            },
+            {
+                id: 7,
+                name: "Tailored Stretch Chino Pants",
+                category: "Pants",
+                price: 1599,
+                oldPrice: 2299,
+                discount: "30% OFF",
+                rating: 4.6,
+                fabric: "Cotton Lycra Stretch",
+                image: "https://images.unsplash.com/photo-1473966968600-fa801b869a1a?auto=format&fit=crop&q=80&w=600",
+                description: "Slim-fit tailored stretch cotton chino trousers for work or casual outings."
+            },
+            {
+                id: 8,
+                name: "High-Waist Wide Leg Blue Jeans",
+                category: "Jeans",
+                price: 1799,
+                oldPrice: 2599,
+                discount: "30% OFF",
+                rating: 4.9,
+                fabric: "Stretchable Denim",
+                image: "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?auto=format&fit=crop&q=80&w=600",
+                description: "Vintage wash stretch denim jeans with a comfortable wide-leg silhouette."
+            }
+        ];
+
+        // LOCAL STORAGE STATE MANAGEMENT
+        let PRODUCTS = JSON.parse(localStorage.getItem('spectrum_products')) || DEFAULT_PRODUCTS;
+        let cart = [];
+        let wishlist = [];
+        let activeCategory = 'all';
+        let couponDiscount = 0;
+        let qvSelectedSize = 'M';
+
+        window.addEventListener('DOMContentLoaded', () => {
+            renderProducts(PRODUCTS);
+            renderAdminTable();
+        });
+
+        // RENDER PRODUCTS GRID
+        function renderProducts(items) {
+            const grid = document.getElementById('productGrid');
+            grid.innerHTML = '';
+
+            if (items.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full py-12 text-center text-slate-400 space-y-3">
+                        <i data-lucide="package-search" class="w-12 h-12 mx-auto text-purple-400"></i>
+                        <p class="font-bold text-base">No clothing items match your search or filter.</p>
+                        <button onclick="filterCategory('all')" class="text-xs text-purple-600 dark:text-purple-400 underline font-semibold">View All Collections</button>
+                    </div>
+                `;
+                lucide.createIcons();
+                return;
+            }
+
+            items.forEach(product => {
+                const isWish = wishlist.includes(product.id);
+                const card = document.createElement('div');
+                card.className = "glass-card rounded-3xl overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col justify-between group border border-slate-200 dark:border-slate-800";
+                
+                card.innerHTML = `
+                    <div class="relative overflow-hidden h-72 bg-slate-100 dark:bg-slate-950">
+                        <img src="${product.image}" alt="${product.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <span class="absolute top-3 left-3 bg-purple-600 text-white text-[10px] font-black px-2.5 py-1 rounded-full uppercase tracking-wider shadow-md">${product.category}</span>
+                        ${product.discount ? `<span class="absolute top-3 right-3 bg-rose-500 text-white text-[10px] font-extrabold px-2 py-1 rounded-md">${product.discount}</span>` : ''}
+                        
+                        <button onclick="toggleWishlist(${product.id})" class="absolute bottom-3 right-3 p-2.5 rounded-full bg-white/80 dark:bg-slate-900/80 backdrop-blur-md text-slate-700 dark:text-slate-200 hover:text-rose-500 transition-colors shadow-md">
+                            <i data-lucide="heart" class="w-4 h-4 ${isWish ? 'fill-rose-500 text-rose-500' : ''}"></i>
+                        </button>
+
+                        <button onclick="openQuickView(${product.id})" class="absolute inset-x-4 bottom-3 opacity-0 group-hover:opacity-100 transition-opacity bg-slate-950/80 text-white text-xs font-bold py-2 rounded-xl backdrop-blur-md text-center">
+                            Quick View Details
+                        </button>
+                    </div>
+
+                    <div class="p-5 flex-1 flex flex-col justify-between space-y-4">
+                        <div class="space-y-1">
+                            <div class="flex items-center justify-between text-xs text-slate-400">
+                                <span class="flex items-center gap-1 text-amber-400 font-bold"><i data-lucide="star" class="w-3.5 h-3.5 fill-amber-400"></i> ${product.rating || 4.8}</span>
+                                <span class="text-[10px] uppercase font-bold text-emerald-500">In Stock</span>
+                            </div>
+                            <h3 class="font-bold text-sm line-clamp-1 group-hover:text-purple-600 transition-colors">${product.name}</h3>
+                            <p class="text-xs text-slate-500 line-clamp-2 leading-relaxed">${product.description}</p>
+                        </div>
+
+                        <!-- Price Tag Display in Rupees (₹) -->
+                        <div class="pt-2 border-t border-slate-100 dark:border-slate-800/60 flex items-center justify-between">
+                            <div>
+                                <div class="text-lg font-black text-purple-600 dark:text-purple-400">₹${Number(product.price).toLocaleString('en-IN')}</div>
+                                ${product.oldPrice ? `<div class="text-[10px] text-slate-400 line-through">₹${Number(product.oldPrice).toLocaleString('en-IN')}</div>` : ''}
+                            </div>
+                            
+                            <div class="flex gap-1.5">
+                                <button onclick="addToCart(${product.id})" class="p-2.5 bg-purple-600 hover:bg-purple-700 text-white rounded-xl transition-all shadow-md" title="Add to Bag">
+                                    <i data-lucide="shopping-bag" class="w-4 h-4"></i>
+                                </button>
+                                <button onclick="buyNow(${product.id})" class="px-3 py-2.5 bg-gradient-spectrum text-slate-950 font-black text-xs rounded-xl hover:opacity-90 transition-all shadow-md">
+                                    Buy Now
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+            lucide.createIcons();
+        }
+
+        // CATEGORY & SEARCH FILTERING
+        function filterCategory(cat) {
+            activeCategory = cat;
+            document.getElementById('activeCategoryBadge').innerText = cat === 'all' ? 'All Apparel' : cat;
+
+            document.querySelectorAll('.cat-pill').forEach(btn => {
+                if(btn.innerText.toLowerCase().includes(cat.toLowerCase()) || (cat === 'all' && btn.innerText.includes('All'))) {
+                    btn.className = "cat-pill active px-3.5 py-1.5 rounded-full bg-purple-600 text-white shadow-sm transition-all";
+                } else {
+                    btn.className = "cat-pill px-3.5 py-1.5 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-purple-100 dark:hover:bg-slate-700 transition-all";
+                }
+            });
+
+            applyFilters();
+        }
+
+        function applyFilters() {
+            let filtered = PRODUCTS;
+
+            if (activeCategory !== 'all') {
+                filtered = filtered.filter(p => p.category.toLowerCase() === activeCategory.toLowerCase());
+            }
+
+            const priceVal = document.getElementById('priceFilter').value;
+            if (priceVal === 'under1000') filtered = filtered.filter(p => p.price < 1000);
+            else if (priceVal === '1000to3000') filtered = filtered.filter(p => p.price >= 1000 && p.price <= 3000);
+            else if (priceVal === 'over3000') filtered = filtered.filter(p => p.price > 3000);
+
+            const sortVal = document.getElementById('sortSelect').value;
+            if (sortVal === 'low-high') filtered.sort((a, b) => a.price - b.price);
+            else if (sortVal === 'high-low') filtered.sort((a, b) => b.price - a.price);
+            else if (sortVal === 'rating') filtered.sort((a, b) => (b.rating || 4.8) - (a.rating || 4.8));
+
+            renderProducts(filtered);
+        }
+
+        function handleSearch() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = PRODUCTS.filter(p => p.name.toLowerCase().includes(query) || p.category.toLowerCase().includes(query));
+            renderProducts(filtered);
+        }
+
+        function handleSearchMobile() {
+            const query = document.getElementById('searchInputMobile').value.toLowerCase();
+            const filtered = PRODUCTS.filter(p => p.name.toLowerCase().includes(query) || p.category.toLowerCase().includes(query));
+            renderProducts(filtered);
+        }
+
+        // STORE OWNER MODAL & INVENTORY MANAGEMENT
+        function openOwnerModal() {
+            document.getElementById('ownerModal').classList.remove('hidden');
+        }
+
+        function closeOwnerModal() {
+            document.getElementById('ownerModal').classList.add('hidden');
+        }
+
+        function setPresetImage(url) {
+            document.getElementById('ownerImageUrl').value = url;
+            showToast('Preset Image Selected!', 'image');
+        }
+
+        function handleOwnerUpload(e) {
+            e.preventDefault();
+
+            const name = document.getElementById('ownerProdName').value.trim();
+            const category = document.getElementById('ownerCategory').value;
+            const price = parseFloat(document.getElementById('ownerPrice').value);
+            const discount = document.getElementById('ownerDiscount').value.trim() || "NEW";
+            const fabric = document.getElementById('ownerFabric').value.trim() || "Cotton Blend";
+            const image = document.getElementById('ownerImageUrl').value.trim();
+            const desc = document.getElementById('ownerDesc').value.trim();
+
+            const newProduct = {
+                id: Date.now(),
+                name: name,
+                category: category,
+                price: price,
+                oldPrice: Math.round(price * 1.3),
+                discount: discount,
+                rating: 5.0,
+                fabric: fabric,
+                image: image,
+                description: desc
+            };
+
+            PRODUCTS.unshift(newProduct);
+            localStorage.setItem('spectrum_products', JSON.stringify(PRODUCTS));
+
+            renderProducts(PRODUCTS);
+            renderAdminTable();
+            closeOwnerModal();
+
+            // Reset Form
+            document.getElementById('ownerUploadForm').reset();
+            showToast(`Published "${name}" to ${category} section!`, 'check-circle');
+        }
+
+        function renderAdminTable() {
+            const tbody = document.getElementById('adminTableBody');
+            tbody.innerHTML = '';
+
+            PRODUCTS.forEach(p => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors";
+                tr.innerHTML = `
+                    <td class="py-3 px-2 flex items-center gap-2">
+                        <img src="${p.image}" class="w-8 h-8 rounded-lg object-cover">
+                        <span class="font-bold line-clamp-1">${p.name}</span>
+                    </td>
+                    <td class="py-3 px-2"><span class="px-2 py-0.5 rounded-full bg-purple-100 dark:bg-purple-900/50 text-purple-600 dark:text-purple-300 font-bold text-[10px]">${p.category}</span></td>
+                    <td class="py-3 px-2 font-mono font-bold text-purple-600 dark:text-purple-400">₹${Number(p.price).toLocaleString('en-IN')}</td>
+                    <td class="py-3 px-2 text-slate-400">S, M, L, XL</td>
+                    <td class="py-3 px-2 text-right">
+                        <button onclick="deleteProduct(${p.id})" class="text-rose-500 hover:text-rose-700 p-1"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+            lucide.createIcons();
+        }
+
+        function deleteProduct(id) {
+            if (confirm("Remove this apparel item from your live shop catalog?")) {
+                PRODUCTS = PRODUCTS.filter(p => p.id !== id);
+                localStorage.setItem('spectrum_products', JSON.stringify(PRODUCTS));
+                renderProducts(PRODUCTS);
+                renderAdminTable();
+                showToast("Product deleted from store inventory", "trash-2");
+            }
+        }
+
+        // CART MANAGEMENT (IN RUPEES ₹)
+        function addToCart(productId, size = 'M') {
+            const item = PRODUCTS.find(p => p.id === productId);
+            const existing = cart.find(c => c.id === productId && c.size === size);
+
+            if (existing) {
+                existing.qty++;
+            } else {
+                cart.push({ ...item, qty: 1, size: size });
+            }
+
+            updateCartUI();
+            showToast(`Added ${item.name} (${size}) to Bag!`, 'shopping-bag');
+        }
+
+        function buyNow(productId) {
+            addToCart(productId);
+            openCheckoutModal();
+        }
+
+        function updateCartUI() {
+            const container = document.getElementById('cartItemsContainer');
+            const countBadge = document.getElementById('cartCountBadge');
+            
+            const totalQty = cart.reduce((acc, item) => acc + item.qty, 0);
+            countBadge.innerText = totalQty;
+
+            container.innerHTML = '';
+
+            if (cart.length === 0) {
+                container.innerHTML = `
+                    <div class="py-12 text-center text-slate-400 space-y-3">
+                        <i data-lucide="shopping-bag" class="w-12 h-12 mx-auto text-slate-300 dark:text-slate-700"></i>
+                        <p class="font-bold text-sm">Your shopping bag is empty.</p>
+                        <p class="text-xs text-slate-500">Explore Kurtis, Sarees, Tops & Jeans!</p>
+                    </div>
+                `;
+                lucide.createIcons();
+                calculateTotals();
+                return;
+            }
+
+            cart.forEach(item => {
+                const row = document.createElement('div');
+                row.className = "flex gap-3 p-3 bg-slate-50 dark:bg-slate-950 rounded-2xl border border-slate-200 dark:border-slate-800 items-center";
+                row.innerHTML = `
+                    <img src="${item.image}" alt="${item.name}" class="w-16 h-16 rounded-xl object-cover">
+                    <div class="flex-1 space-y-1">
+                        <h4 class="font-bold text-xs line-clamp-1">${item.name}</h4>
+                        <div class="text-[10px] text-slate-400">Size: ${item.size} • ₹${Number(item.price).toLocaleString('en-IN')}</div>
+                        <div class="flex items-center gap-2 pt-1">
+                            <button onclick="changeQty(${item.id}, '${item.size}', -1)" class="w-5 h-5 rounded-md bg-slate-200 dark:bg-slate-800 flex items-center justify-center text-xs font-bold">-</button>
+                            <span class="text-xs font-bold">${item.qty}</span>
+                            <button onclick="changeQty(${item.id}, '${item.size}', 1)" class="w-5 h-5 rounded-md bg-slate-200 dark:bg-slate-800 flex items-center justify-center text-xs font-bold">+</button>
+                        </div>
+                    </div>
+                    <button onclick="removeFromCart(${item.id}, '${item.size}')" class="text-rose-500 p-2"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                `;
+                container.appendChild(row);
+            });
+
+            calculateTotals();
+            lucide.createIcons();
+        }
+
+        function changeQty(id, size, delta) {
+            const item = cart.find(c => c.id === id && c.size === size);
+            if (item) {
+                item.qty += delta;
+                if (item.qty <= 0) {
+                    cart = cart.filter(c => !(c.id === id && c.size === size));
+                }
+            }
+            updateCartUI();
+        }
+
+        function removeFromCart(id, size) {
+            cart = cart.filter(c => !(c.id === id && c.size === size));
+            updateCartUI();
+        }
+
+        function calculateTotals() {
+            const subtotal = cart.reduce((acc, item) => acc + (item.price * item.qty), 0);
+            const discount = subtotal * couponDiscount;
+            const grandTotal = subtotal - discount;
+
+            document.getElementById('cartSubtotalText').innerText = `₹${Number(subtotal.toFixed(0)).toLocaleString('en-IN')}`;
+            document.getElementById('cartDiscountText').innerText = `-₹${Number(discount.toFixed(0)).toLocaleString('en-IN')}`;
+            document.getElementById('cartGrandTotalText').innerText = `₹${Number(grandTotal.toFixed(0)).toLocaleString('en-IN')}`;
+
+            // Free Shipping Progress Bar (Target: ₹999)
+            const target = 999;
+            const pct = Math.min((subtotal / target) * 100, 100);
+            document.getElementById('freeShipBar').style.width = `${pct}%`;
+            
+            if (subtotal >= target) {
+                document.getElementById('freeShipText').innerText = "🎉 You unlocked FREE Express Delivery!";
+            } else {
+                document.getElementById('freeShipText').innerText = `Add ₹${Number((target - subtotal).toFixed(0)).toLocaleString('en-IN')} for FREE Delivery`;
+            }
+        }
+
+        function applyCoupon() {
+            const code = document.getElementById('couponInput').value.trim();
+            if (code === 'SPECTRUM10') {
+                couponDiscount = 0.10;
+                showToast('10% Discount Applied!', 'sparkles');
+            } else {
+                showToast('Invalid Coupon Code', 'alert-circle');
+            }
+            calculateTotals();
+        }
+
+        function toggleCartDrawer() {
+            document.getElementById('cartDrawer').classList.toggle('hidden');
+        }
+
+        // WISHLIST LOGIC
+        function toggleWishlist(id) {
+            if (wishlist.includes(id)) {
+                wishlist = wishlist.filter(w => w !== id);
+                showToast('Removed from Wishlist', 'heart');
+            } else {
+                wishlist.push(id);
+                showToast('Saved to Wishlist!', 'heart');
+            }
+            document.getElementById('wishlistBadge').innerText = wishlist.length;
+            document.getElementById('wishlistBadge').classList.toggle('hidden', wishlist.length === 0);
+            applyFilters();
+        }
+
+        function openWishlistModal() {
+            if (wishlist.length === 0) {
+                showToast('Wishlist is currently empty!', 'heart');
+                return;
+            }
+            const items = PRODUCTS.filter(p => wishlist.includes(p.id));
+            renderProducts(items);
+        }
+
+        // QUICK VIEW MODAL
+        function openQuickView(id) {
+            const p = PRODUCTS.find(item => item.id === id);
+            document.getElementById('qvImage').src = p.image;
+            document.getElementById('qvTag').innerText = p.category;
+            document.getElementById('qvTitle').innerText = p.name;
+            document.getElementById('qvPrice').innerText = `₹${Number(p.price).toLocaleString('en-IN')}`;
+            document.getElementById('qvOldPrice').innerText = p.oldPrice ? `₹${Number(p.oldPrice).toLocaleString('en-IN')}` : '';
+            document.getElementById('qvDiscount').innerText = p.discount || 'Special Price';
+            document.getElementById('qvDesc').innerText = p.description;
+            document.getElementById('qvFabricText').innerText = p.fabric || "Pure Cotton";
+
+            document.getElementById('qvAddToCartBtn').onclick = () => { addToCart(p.id, qvSelectedSize); closeQuickView(); };
+            document.getElementById('qvBuyNowBtn').onclick = () => { buyNow(p.id); closeQuickView(); };
+
+            document.getElementById('quickViewModal').classList.remove('hidden');
+        }
+
+        function selectQvSize(size, btn) {
+            qvSelectedSize = size;
+            document.querySelectorAll('.qv-size-btn').forEach(b => {
+                b.className = "qv-size-btn border border-slate-300 dark:border-slate-700 px-3 py-1.5 rounded-xl text-xs font-bold hover:border-purple-600";
+            });
+            btn.className = "qv-size-btn border border-purple-600 bg-purple-600 text-white px-3 py-1.5 rounded-xl text-xs font-bold";
+        }
+
+        function closeQuickView() {
+            document.getElementById('quickViewModal').classList.add('hidden');
+        }
+
+        // CUSTOMER SUPPORT MODAL & AI CHAT
+        function openSupportModal(tab) {
+            document.getElementById('supportModal').classList.remove('hidden');
+            switchSupportTab(tab);
+        }
+
+        function closeSupportModal() {
+            document.getElementById('supportModal').classList.add('hidden');
+        }
+
+        function switchSupportTab(tab) {
+            document.getElementById('supportTabChat').classList.add('hidden');
+            document.getElementById('supportTabTrack').classList.add('hidden');
+            document.getElementById('supportTabSize').classList.add('hidden');
+
+            document.getElementById('tabChatBtn').className = "flex-1 py-3 text-slate-500 flex items-center justify-center gap-1.5";
+            document.getElementById('tabTrackBtn').className = "flex-1 py-3 text-slate-500 flex items-center justify-center gap-1.5";
+            document.getElementById('tabSizeBtn').className = "flex-1 py-3 text-slate-500 flex items-center justify-center gap-1.5";
+
+            if (tab === 'chat' || tab === 'help') {
+                document.getElementById('supportTabChat').classList.remove('hidden');
+                document.getElementById('tabChatBtn').className = "flex-1 py-3 border-b-2 border-purple-600 text-purple-600 font-extrabold flex items-center justify-center gap-1.5";
+            } else if (tab === 'track') {
+                document.getElementById('supportTabTrack').classList.remove('hidden');
+                document.getElementById('tabTrackBtn').className = "flex-1 py-3 border-b-2 border-purple-600 text-purple-600 font-extrabold flex items-center justify-center gap-1.5";
+            } else if (tab === 'size') {
+                document.getElementById('supportTabSize').classList.remove('hidden');
+                document.getElementById('tabSizeBtn').className = "flex-1 py-3 border-b-2 border-purple-600 text-purple-600 font-extrabold flex items-center justify-center gap-1.5";
+            }
+        }
+
+        function sendChatMessage() {
+            const input = document.getElementById('chatInput');
+            const text = input.value.trim();
+            if (!text) return;
+
+            const chat = document.getElementById('chatMessages');
+            chat.innerHTML += `
+                <div class="flex gap-2 justify-end">
+                    <div class="bg-purple-600 text-white p-3 rounded-2xl max-w-xs">${text}</div>
+                </div>
+            `;
+            input.value = '';
+
+            setTimeout(() => {
+                let reply = "Namaste! I am Spectrum's AI Assistant. We provide free express delivery across all states in India for orders above ₹999.";
+                if (text.toLowerCase().includes('kurti')) reply = "Our Kurtis are crafted from 100% Chanderi Cotton and Silk. Size M fits bust 38 inches comfortably.";
+                if (text.toLowerCase().includes('owner') || text.toLowerCase().includes('upload')) reply = "Store owners can click the 'Owner Portal' button in the navigation header to upload new clothes directly in ₹!";
+                if (text.toLowerCase().includes('return')) reply = "We offer a 15-day door pickup exchange across all Indian pincodes with tags intact.";
+                if (text.toLowerCase().includes('upi') || text.toLowerCase().includes('pay')) reply = "We accept GPay, PhonePe, Paytm, NetBanking, Cards, and Cash on Delivery (COD in ₹).";
+
+                chat.innerHTML += `
+                    <div class="flex gap-2">
+                        <div class="w-7 h-7 rounded-full bg-purple-600 text-white flex items-center justify-center font-bold text-[10px]">S</div>
+                        <div class="bg-slate-100 dark:bg-slate-800 p-3 rounded-2xl max-w-xs text-slate-700 dark:text-slate-300">${reply}</div>
+                    </div>
+                `;
+                chat.scrollTop = chat.scrollHeight;
+            }, 500);
+        }
+
+        function trackOrderSim() {
+            const id = document.getElementById('trackOrderIdInput').value || "#SPEC98342";
+            showToast(`Tracking status retrieved for ${id}`, 'truck');
+        }
+
+        function calculateSuggestedSize() {
+            const bust = document.getElementById('sizeBust').value;
+            const res = document.getElementById('sizeResultText');
+            res.classList.remove('hidden');
+            if (bust > 40) res.innerText = "Suggested Size: XL / XXL";
+            else if (bust > 36) res.innerText = "Suggested Size: Large (L) / Medium (M)";
+            else res.innerText = "Suggested Size: Small (S)";
+        }
+
+        // CHECKOUT & ORDER CONFIRMATION
+        function openCheckoutModal() {
+            if (cart.length === 0) {
+                showToast('Bag is empty! Add clothes before checkout.', 'shopping-bag');
+                return;
+            }
+            toggleCartDrawer();
+            document.getElementById('checkoutModal').classList.remove('hidden');
+        }
+
+        function closeCheckoutModal() {
+            document.getElementById('checkoutModal').classList.add('hidden');
+        }
+
+        function handlePlaceOrder(e) {
+            e.preventDefault();
+            closeCheckoutModal();
+            cart = [];
+            updateCartUI();
+            document.getElementById('orderSuccessModal').classList.remove('hidden');
+        }
+
+        function closeOrderSuccess() {
+            document.getElementById('orderSuccessModal').classList.add('hidden');
+        }
+
+        // MOBILE MENU
+        function toggleMobileMenu() {
+            document.getElementById('mobileDrawer').classList.toggle('hidden');
+        }
+
+        // THEME TOGGLE
+        let isDark = true;
+        function toggleTheme() {
+            isDark = !isDark;
+            document.documentElement.classList.toggle('dark', isDark);
+            document.getElementById('themeIcon').setAttribute('data-lucide', isDark ? 'moon' : 'sun');
+            lucide.createIcons();
+        }
+
+        // TOAST UTILITY
+        function showToast(msg, icon = 'check-circle') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = "glass-card px-4 py-3 rounded-2xl shadow-2xl text-xs font-bold flex items-center gap-2 border border-slate-200 dark:border-slate-800 pointer-events-auto bg-slate-900 text-white";
+            toast.innerHTML = `<i data-lucide="${icon}" class="w-4 h-4 text-emerald-400"></i> ${msg}`;
+            container.appendChild(toast);
+            lucide.createIcons();
+
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
